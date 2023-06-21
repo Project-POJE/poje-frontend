@@ -19,7 +19,7 @@ export default function useModal() {
         fn: callbackFn,
       }));
     },
-    [setCallback, setIsOpen,setModalContent]
+    [setCallback, setIsOpen, setModalContent]
   );
 
   const closeModal = useCallback(() => {
@@ -27,9 +27,7 @@ export default function useModal() {
     setModalContent({ message: '' });
     callback.fn();
     setCallback({ fn: () => {} });
-  }, [callback, setCallback, setIsOpen,setModalContent]);
+  }, [callback, setCallback, setIsOpen, setModalContent]);
 
   return { isOpen, setModal, closeModal, modalContent };
 }
-
-

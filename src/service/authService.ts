@@ -38,6 +38,7 @@ export default class AuthService {
     const options: AxiosRequestConfig = {
       method: 'GET',
     };
+
     return await this.http.fetchJson<loginIdDuplicateResponse>(
       `/loginId/${data.loginId}`,
       options

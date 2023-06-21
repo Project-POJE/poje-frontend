@@ -20,6 +20,7 @@ export default class Http {
     this.client = axios.create({
       baseURL,
       withCredentials: true,
+      timeout: 3000,
     });
 
     this.client.interceptors.request.use((req) => {
@@ -64,7 +65,6 @@ export default class Http {
                 },
               });
 
-              //console.log(re, '리이슈 보낸결과');
               if (re.headers.authorization) {
                 const accessToken = re.headers.authorization.split(' ')[1];
                 this.localStorage.set<string>('TOKEN', accessToken);
@@ -104,7 +104,7 @@ export default class Http {
           //return Promise.reject(e);
         }
       }
-      throw new Error('Connect Error');
+      throw new Error('현재 서버가 닫혀 있습니다.');
       //리프레시 토큰
     }
   }
@@ -126,7 +126,6 @@ export default class Http {
   ): Promise<AxiosResponse<any>> {
     return new Promise((resolve) =>
       this.reRequestWaitQueue.push(() => {
-        console.log('큐에 대기하는 요청들', originRequestConfig);
         resolve(
           this.client({
             ...originRequestConfig!,
