@@ -1,8 +1,37 @@
-import { useRef, useEffect } from 'react';
-import usePortfolioIntro from './usePortfolioIntro';
+import { useRef, useEffect, useState } from 'react';
+import { UpdataIntroTData, UpdataIntroTVariables } from './usePortfolioIntro';
+import { PortfolioIntroType } from '@src/service/types/portfolio';
+import { UseMutateFunction } from '@tanstack/react-query';
 
-export default function usePortfolioModifyForm() {
-  const { copiedPfIntro, setCopiedPfIntro, updateIntro } = usePortfolioIntro();
+export type CopiedPfIntroType = Omit<
+  PortfolioIntroType,
+  'likeStatus' | 'likeCount'
+> & {
+  backgroundImgFile: File | null;
+};
+
+type Props = {
+  originIntroData: PortfolioIntroType;
+  updateIntro: UseMutateFunction<
+    UpdataIntroTData,
+    any,
+    UpdataIntroTVariables,
+    any
+  >;
+};
+
+export default function usePortfolioModifyForm({
+  originIntroData,
+  updateIntro,
+}: Props) {
+  const [copiedPfIntro, setCopiedPfIntro] = useState<CopiedPfIntroType>({
+    title: originIntroData.title,
+    description: originIntroData.description,
+    portfolioId: originIntroData.portfolioId,
+    jobName: originIntroData.jobName,
+    backgroundImg: originIntroData.backgroundImg,
+    backgroundImgFile: null,
+  });
   const discriptionRef = useRef<HTMLTextAreaElement>(null);
 
   const onChangeInputEl = (
